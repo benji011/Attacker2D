@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=1]
+
+[ext_resource path="res://icon/pointer_black.png" type="Texture" id=1]
+
+[sub_resource type="GDScript" id=1]
+
+script/source = "\nextends Node2D\n\n# member variables here, example:\n# var a=2\n# var b=\"textvar\"\n\nfunc _ready():\n\tInput.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)\n\tset_process_input(true)\n\tpass\n\n\nfunc _input(delta):\n\tif delta.type == InputEvent.MOUSE_MOTION:\n\t\tvar pos = delta.pos;\n\t\tset_pos(pos);\n\t"
+
+[node name="cursor_node" type="Node2D"]
+
+script/script = SubResource( 1 )
+
+[node name="Sprite" type="Sprite" parent="."]
+
+transform/scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 1 )
+
+

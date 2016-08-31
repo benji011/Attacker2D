@@ -1,0 +1,89 @@
+[gd_scene load_steps=8 format=1]
+
+[ext_resource path="res://scn/archer.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scn/archer.gd" type="Script" id=2]
+[ext_resource path="res://scn/cursor.tscn" type="PackedScene" id=3]
+[ext_resource path="res://script/SpawnArrow.gd" type="Script" id=4]
+[ext_resource path="res://scn/arrow02.tscn" type="PackedScene" id=5]
+
+[sub_resource type="GDScript" id=1]
+
+script/source = "\nextends StaticBody2D\n\n# member variables here, example:\n# var a=2\n# var b=\"textvar\"\n\nfunc _ready():\n\tset_fixed_process(true)\n\tpass\n\n#var time = 0.0;\n\nfunc _fixed_process(delta):\n\t#time += delta;\n\t#print (time)\n\t\n\t#var b = get_viewport().get_mouse_pos()\n\t#print (b)\n\tpass\n\n\n\nfunc _on_border01_body_enter( body ):\n\tbody.queue_free()\n\tprint (\"arrow gone\")\n\tpass # replace with function body\n"
+
+[sub_resource type="RectangleShape2D" id=2]
+
+custom_solver_bias = 0.0
+extents = Vector2( 10, 10 )
+
+[node name="ArrowNode" type="Node"]
+
+[node name="Wall" type="StaticBody2D" parent="."]
+
+transform/pos = Vector2( 1307.36, 297.317 )
+transform/scale = Vector2( 2.41798, 10.1259 )
+input/pickable = false
+collision/layers = 1
+collision/mask = 1
+constant_linear_velocity = Vector2( 0, 0 )
+constant_angular_velocity = 0.0
+friction = 1.0
+bounce = 0.0
+script/script = SubResource( 1 )
+__meta__ = { "_edit_group_":true }
+
+[node name="border01" type="Area2D" parent="Wall"]
+
+transform/pos = Vector2( 1.38195, 1.60913 )
+transform/scale = Vector2( 0.786366, 0.919319 )
+input/pickable = true
+shapes/0/shape = SubResource( 2 )
+shapes/0/transform = Matrix32( 3.78383, 0, 0, 3.33993, -1.4637, -0.64431 )
+shapes/0/trigger = false
+shapes/1/shape = SubResource( 2 )
+shapes/1/transform = Matrix32( 3.78383, 0, 0, 3.33993, -1.4637, -0.64431 )
+shapes/1/trigger = false
+gravity_vec = Vector2( 0, 1 )
+gravity = 98.0
+linear_damp = 0.1
+angular_damp = 1.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Wall/border01"]
+
+transform/pos = Vector2( -1.4637, -0.64431 )
+transform/scale = Vector2( 3.78383, 3.33993 )
+shape = SubResource( 2 )
+trigger = false
+_update_shape_index = 0
+
+[node name="CollisionShape2D1" type="CollisionShape2D" parent="Wall/border01"]
+
+transform/pos = Vector2( -1.4637, -0.64431 )
+transform/scale = Vector2( 3.78383, 3.33993 )
+shape = SubResource( 2 )
+trigger = false
+_update_shape_index = 1
+
+[node name="Archer" parent="." instance=ExtResource( 1 )]
+
+transform/pos = Vector2( 70.3577, 286.984 )
+script/script = ExtResource( 2 )
+
+[node name="cursor_node" parent="." instance=ExtResource( 3 )]
+
+transform/pos = Vector2( 378.144, 17.1884 )
+
+[node name="SpawnArrow" type="Node" parent="."]
+
+script/script = ExtResource( 4 )
+arrow = ExtResource( 5 )
+
+[node name="Position2D" type="Position2D" parent="SpawnArrow"]
+
+transform/pos = Vector2( 163.624, 290.849 )
+transform/scale = Vector2( 2.13845, 1.9696 )
+
+[connection signal="body_enter" from="Wall/border01" to="Wall" method="_on_border01_body_enter"]
+
+[connection signal="body_enter" from="Wall/border01" to="SpawnArrow" method="_on_border01_body_enter"]
+
+
